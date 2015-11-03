@@ -35,7 +35,7 @@ $(document).ready(function(){
                 counter++;
 
                 //$span = $('<span/>').attr('title', counter);
-                $col = $('<td/>').attr('title', counter).attr('data-x',i).attr('data-y', a);
+                $col = $('<td/>').attr('title', counter).attr('data-y',a).attr('data-x', i);
                // $col.append($span).addClass('test').attr('data-x',a).attr('data-y', i);
                 $row.append($col);
 
@@ -47,15 +47,15 @@ $(document).ready(function(){
 
     makeGrid('#conwayWrap', 20, 20);
 
-    function findNeighbour(elem, grid){
+    function findLivingNeighbour(elem, grid){
 
         // X- und Y-Koordinaten aktuelles Element
         var thisX = parseInt(elem.attr('data-x'));
         var thisY = parseInt(elem.attr('data-y'));
 
         // Nachbar rechts, links
-        var nbR = elem.next();
-        var nbL = elem.prev();
+        var nbR = $(grid).find('TD.alive[data-y="' + thisY +'"][data-x="' + (thisX + 1)  + '"]').addClass('neighbour');
+        var nbL = $(grid).find('TD.alive[data-y="' + thisY +'"][data-x="' + (thisX - 1)  + '"]').addClass('neighbour');
 
         // Nachbar Top, TopLeft, TopRight
         var nbT = $(grid).find('TD.alive[data-y="' + (thisY - 1) +'"][data-x="' + thisX  + '"]');
@@ -79,15 +79,26 @@ $(document).ready(function(){
             bottomRight: nbBR,
         }
 
-        console.log(nbT.length)
-
         // Anzahl der Nachbarn aus Object auslesen
-        var neighboursKeys = $.map(neighbours, function(value, key){
-           return key;
+        var neighbours = $.map(neighbours, function(value, key){
+           return value;
         });
-        var neighbourCount = neighboursKeys.length;
 
-        return neighbourCount;
+        // Lebende Nachbarn finden
+        var livingNeighbours = [];
+        for(var i = 0; i < neighbours.length; i++){
+            if(neighbours[i].length > 0){
+                livingNeighbours.push(neighbours[i]);
+            } else {
+                console.log('Fehler');
+            }
+        }
+
+        console.log(livingNeighbours)
+
+    }
+
+    function ceckLivingNeighbour(elem){
 
     }
 
@@ -95,9 +106,13 @@ $(document).ready(function(){
 
         $(this).toggleClass('alive');
 
-        var neighbourAnz = findNeighbour($(this), '.conwayGrid');
+    });
 
-        console.log(neighbourAnz);
+    $('#start').on('click', function(){
+
+        $('.alive').each(function(){
+            findLivingNeighbour($(this), '.conwayGrid');
+        });
 
     })
 
