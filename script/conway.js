@@ -97,7 +97,7 @@ $(document).ready(function(){
 
         var neighbourAnz = findNeighbour($(this), '.conwayGrid');
 
-        //console.log(neighbourAnz);
+        console.log(neighbourAnz);
 
     })
 
