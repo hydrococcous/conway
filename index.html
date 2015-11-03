@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Conway's Game of life</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="script/conway.js"></script>
+
+    </head>
+
+<body>
+
+    <style>
+        TABLE{
+            border-collapse: collapse;
+        }
+        TABLE TD{
+            border: 1px solid #ddd;
+            width: 30px;
+            height: 30px;
+            font-size: 0;
+        }
+
+        TABLE TD.alive{
+            background-color: red;
+        }
+        TABLE TD.neighbour{
+            background-color: orange;
+        }
+    </style>
+
+    <div id="conwayWrap">
+
+    </div>
+
+</body>
+</html>
