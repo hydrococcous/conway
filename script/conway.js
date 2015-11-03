@@ -35,7 +35,7 @@ $(document).ready(function(){
                 counter++;
 
                 //$span = $('<span/>').attr('title', counter);
-                $col = $('<td/>').attr('title', counter).attr('data-y',a).attr('data-x', i);
+                $col = $('<td/>').attr('id', 'id_' + counter).attr('data-y',a).attr('data-x', i);
                // $col.append($span).addClass('test').attr('data-x',a).attr('data-y', i);
                 $row.append($col);
 
@@ -45,7 +45,7 @@ $(document).ready(function(){
         }
     }
 
-    makeGrid('#conwayWrap', 20, 20);
+    makeGrid('#conwayWrap', 12, 12);
 
     function findLivingNeighbour(elem, grid){
 
@@ -54,8 +54,8 @@ $(document).ready(function(){
         var thisY = parseInt(elem.attr('data-y'));
 
         // Nachbar rechts, links
-        var nbR = $(grid).find('TD.alive[data-y="' + thisY +'"][data-x="' + (thisX + 1)  + '"]').addClass('neighbour');
-        var nbL = $(grid).find('TD.alive[data-y="' + thisY +'"][data-x="' + (thisX - 1)  + '"]').addClass('neighbour');
+        var nbR = $(grid).find('TD.alive[data-y="' + thisY +'"][data-x="' + (thisX + 1)  + '"]');
+        var nbL = $(grid).find('TD.alive[data-y="' + thisY +'"][data-x="' + (thisX - 1)  + '"]');
 
         // Nachbar Top, TopLeft, TopRight
         var nbT = $(grid).find('TD.alive[data-y="' + (thisY - 1) +'"][data-x="' + thisX  + '"]');
@@ -86,15 +86,16 @@ $(document).ready(function(){
 
         // Lebende Nachbarn finden
         var livingNeighbours = [];
+
         for(var i = 0; i < neighbours.length; i++){
             if(neighbours[i].length > 0){
                 livingNeighbours.push(neighbours[i]);
             } else {
-                console.log('Fehler');
+                console.log('Tote: ' + elem.attr('id'));
             }
         }
 
-        console.log(livingNeighbours)
+        console.log(livingNeighbours);
 
     }
 
@@ -110,7 +111,7 @@ $(document).ready(function(){
 
     $('#start').on('click', function(){
 
-        $('.alive').each(function(){
+        $('TD').each(function(){
             findLivingNeighbour($(this), '.conwayGrid');
         });
 
