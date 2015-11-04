@@ -40,6 +40,8 @@ $(document).ready(function(){
     makeGrid('#conwayWrap', 4, 4);
 
 
+    var neighboursObj = {};
+
     function findLivingNeighbour(elem, grid){
 
         // X- und Y-Koordinaten aktuelles Element
@@ -53,8 +55,9 @@ $(document).ready(function(){
          *
          */
 
-        var neighbours = new Array();
         var tmp = new Array();
+        var neighbours = new Array();
+        var tmpObj = {};
 
         tmp[0] = $(grid).find('TD.alive[data-y="' + thisY +'"][data-x="' + (thisX + 1)  + '"]'); // E
         tmp[1] = $(grid).find('TD.alive[data-y="' + thisY +'"][data-x="' + (thisX - 1)  + '"]'); // D
@@ -71,22 +74,42 @@ $(document).ready(function(){
             }
         }
 
-        console.log(neighbours.length);
+        neighboursObj[elem.attr('id')] = neighbours;
+
+        /*
+        if(neighbours.length < 2){
+            elem.removeClass('alive');
+
+        } else if(neighbours.length == 2 || neighbours.length == 3){
+            elem.addClass('alive');
+
+        } else if(neighbours.length > 3){
+            elem.removeClass('alive');
+        }
+        */
 
     }
+
 
 
     $('#conwayWrap TD').on('click', function(){
         $(this).toggleClass('alive');
     });
 
+    function call(){
+        $('TD').each(function(){
+            findLivingNeighbour($(this), '.conwayGrid');
+        });
+    }
+
 
     $('#start').on('click', function(){
 
-        $('TD').each(function(){
-            findLivingNeighbour($(this), '.conwayGrid');
+        call();
 
-        });
+        var bar = JSON.stringify(neighboursObj);
+
+        console.log(bar)
 
     })
 
