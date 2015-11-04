@@ -18,7 +18,6 @@ $(document).ready(function(){
      * */
 
     function makeGrid(container, c, r){
-
         // Tabelle in Container erstellen
         $(container).append('<table/>');
         var table = $(container).children();
@@ -27,25 +26,19 @@ $(document).ready(function(){
         var counter = 0;
 
         for(var a = 0; a < r; a++){
-
             $row = $('<tr/>').attr('data-row', a);
-
             for(var i = 0; i < c; i++){
-
                 counter++;
-
-                //$span = $('<span/>').attr('title', counter);
                 $col = $('<td/>').attr('id', 'id_' + counter).attr('data-y',a).attr('data-x', i);
-               // $col.append($span).addClass('test').attr('data-x',a).attr('data-y', i);
                 $row.append($col);
-
             }
 
             table.append($row).addClass('conwayGrid');
         }
     }
 
-    makeGrid('#conwayWrap', 12, 12);
+    makeGrid('#conwayWrap', 4, 4);
+
 
     function findLivingNeighbour(elem, grid){
 
@@ -53,66 +46,46 @@ $(document).ready(function(){
         var thisX = parseInt(elem.attr('data-x'));
         var thisY = parseInt(elem.attr('data-y'));
 
-        // Nachbar rechts, links
-        var nbR = $(grid).find('TD.alive[data-y="' + thisY +'"][data-x="' + (thisX + 1)  + '"]');
-        var nbL = $(grid).find('TD.alive[data-y="' + thisY +'"][data-x="' + (thisX - 1)  + '"]');
+        /*
+         * A B C
+         * D X E
+         * F G H
+         *
+         */
 
-        // Nachbar Top, TopLeft, TopRight
-        var nbT = $(grid).find('TD.alive[data-y="' + (thisY - 1) +'"][data-x="' + thisX  + '"]');
-        var nbTL = $(grid).find('TD.alive[data-y="' + (thisY - 1) +'"][data-x="' + (thisX - 1)  + '"]');
-        var nbTR = $(grid).find('TD.alive[data-y="' + (thisY - 1) +'"][data-x="' + (thisX + 1)  + '"]');
+        var neighbours = new Array();
+        var tmp = new Array();
 
-        // Nachbar Bottom, BottomLeft, BottomRight
-        var nbB = $(grid).find('TD.alive[data-y="' + (thisY + 1) +'"][data-x="' + thisX  + '"]');
-        var nbBL = $(grid).find('TD.alive[data-y="' + (thisY + 1) +'"][data-x="' + (thisX - 1)  + '"]');
-        var nbBR = $(grid).find('TD.alive[data-y="' + (thisY + 1) +'"][data-x="' + (thisX + 1)  + '"]');
+        tmp[0] = $(grid).find('TD.alive[data-y="' + thisY +'"][data-x="' + (thisX + 1)  + '"]'); // E
+        tmp[1] = $(grid).find('TD.alive[data-y="' + thisY +'"][data-x="' + (thisX - 1)  + '"]'); // D
+        tmp[2] = $(grid).find('TD.alive[data-y="' + (thisY - 1) +'"][data-x="' + thisX  + '"]'); // B
+        tmp[3] = $(grid).find('TD.alive[data-y="' + (thisY - 1) +'"][data-x="' + (thisX - 1)  + '"]'); // A
+        tmp[4] = $(grid).find('TD.alive[data-y="' + (thisY - 1) +'"][data-x="' + (thisX + 1)  + '"]'); // C
+        tmp[5] = $(grid).find('TD.alive[data-y="' + (thisY + 1) +'"][data-x="' + thisX  + '"]'); // G
+        tmp[6] = $(grid).find('TD.alive[data-y="' + (thisY + 1) +'"][data-x="' + (thisX - 1)  + '"]'); // F
+        tmp[7] = $(grid).find('TD.alive[data-y="' + (thisY + 1) +'"][data-x="' + (thisX + 1)  + '"]'); // H
 
-        // In Object übergeben
-        var neighbours = {
-            left:  nbL,
-            right: nbR,
-            top: nbT,
-            topLeft: nbTL,
-            topRight: nbTR,
-            bottom: nbB,
-            bottomLeft: nbBL,
-            bottomRight: nbBR,
-        }
-
-        // Anzahl der Nachbarn aus Object auslesen
-        var neighbours = $.map(neighbours, function(value, key){
-           return value;
-        });
-
-        // Lebende Nachbarn finden
-        var livingNeighbours = [];
-
-        for(var i = 0; i < neighbours.length; i++){
-            if(neighbours[i].length > 0){
-                livingNeighbours.push(neighbours[i]);
-            } else {
-                console.log('Tote: ' + elem.attr('id'));
+        for(var i = 0; i < tmp.length; i++){
+            if(tmp[i].length > 0){
+                neighbours.push(tmp[i].attr('id'))
             }
         }
 
-        console.log(livingNeighbours);
+        console.log(neighbours.length);
 
     }
 
-    function ceckLivingNeighbour(elem){
-
-    }
 
     $('#conwayWrap TD').on('click', function(){
-
         $(this).toggleClass('alive');
-
     });
+
 
     $('#start').on('click', function(){
 
         $('TD').each(function(){
             findLivingNeighbour($(this), '.conwayGrid');
+
         });
 
     })
