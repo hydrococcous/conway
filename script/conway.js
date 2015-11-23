@@ -37,7 +37,7 @@ $(document).ready(function(){
         }
     }
 
-    makeGrid('#conwayWrap', 4, 4);
+    makeGrid('#conwayWrap', 5, 5);
 
 
     var neighboursObj = {};
@@ -68,6 +68,7 @@ $(document).ready(function(){
         tmp[6] = $(grid).find('TD.alive[data-y="' + (thisY + 1) +'"][data-x="' + (thisX - 1)  + '"]'); // F
         tmp[7] = $(grid).find('TD.alive[data-y="' + (thisY + 1) +'"][data-x="' + (thisX + 1)  + '"]'); // H
 
+
         for(var i = 0; i < tmp.length; i++){
             if(tmp[i].length > 0){
                 neighbours.push(tmp[i].attr('id'))
@@ -75,18 +76,6 @@ $(document).ready(function(){
         }
 
         neighboursObj[elem.attr('id')] = neighbours;
-
-        /*
-        if(neighbours.length < 2){
-            elem.removeClass('alive');
-
-        } else if(neighbours.length == 2 || neighbours.length == 3){
-            elem.addClass('alive');
-
-        } else if(neighbours.length > 3){
-            elem.removeClass('alive');
-        }
-        */
 
     }
 
@@ -104,13 +93,11 @@ $(document).ready(function(){
 
 
     $('#start').on('click', function(){
-
         call();
-
-        var bar = JSON.stringify(neighboursObj);
-
-        console.log(bar)
-
+        var neighboursStr = JSON.stringify(neighboursObj);
+        for (var key in neighboursObj) {
+            console.log(key + ' Nachbarn: ' + neighboursObj[key].length);
+        }
     })
 
 
