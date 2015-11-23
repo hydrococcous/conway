@@ -37,7 +37,7 @@ $(document).ready(function(){
         }
     }
 
-    makeGrid('#conwayWrap', 5, 5);
+    makeGrid('#conwayWrap', 10, 10);
 
 
     var neighboursObj = {};
@@ -96,7 +96,27 @@ $(document).ready(function(){
         call();
         var neighboursStr = JSON.stringify(neighboursObj);
         for (var key in neighboursObj) {
-            console.log(key + ' Nachbarn: ' + neighboursObj[key].length);
+            //console.log(key + ' Nachbarn: ' + neighboursObj[key].length);
+            // ### Rules ###
+            // Eine tote Zelle mit genau drei lebenden Nachbarn wird in der Folgegeneration neu geboren.
+            if(neighboursObj[key].length == 3){
+                $('#'+key).addClass('alive');
+            }
+            // Lebende Zellen mit weniger als zwei lebenden Nachbarn sterben in der Folgegeneration an Einsamkeit.
+            else if(neighboursObj[key].length < 2){
+                $('#'+key).removeClass('alive');
+            }
+            //Eine lebende Zelle mit zwei oder drei lebenden Nachbarn bleibt in der Folgegeneration am Leben.
+            else if(neighboursObj[key].length == 2 || neighboursObj[key].length == 3){
+                // stay alive (au  alive prüfen)
+                if($('#'+key).hasClass('alive')){
+                    $('#'+key).addClass('alive');
+                }
+            }
+            // Lebende Zellen mit mehr als drei lebenden Nachbarn sterben in der Folgegeneration an Überbevölkerung.
+            else if(neighboursObj[key].length > 3){
+                $('#'+key).removeClass('alive');
+            }
         }
     })
 
