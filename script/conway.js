@@ -37,7 +37,7 @@ $(document).ready(function(){
         }
     }
 
-    makeGrid('#conwayWrap', 80, 80);
+    makeGrid('#conwayWrap', 50, 50);
 
 
     var neighboursObj = {};
@@ -82,7 +82,7 @@ $(document).ready(function(){
 
 
     $('#conwayWrap TD').on('mouseleave', function(){
-        $(this).toggleClass('alive');
+        $(this).addClass('alive');
     });
 
     function call(){
@@ -94,35 +94,7 @@ $(document).ready(function(){
 
     $('#start').on('click', function(){
         GameOfLife();
-        /*
-        call();
-        var neighboursStr = JSON.stringify(neighboursObj);
-        for (var key in neighboursObj) {
-            //console.log(key + ' Nachbarn: ' + neighboursObj[key].length);
-            // ### Rules ###
-            // Eine tote Zelle mit genau drei lebenden Nachbarn wird in der Folgegeneration neu geboren.
-            if(neighboursObj[key].length == 3){
-                $('#'+key).addClass('alive');
-            }
-            // Lebende Zellen mit weniger als zwei lebenden Nachbarn sterben in der Folgegeneration an Einsamkeit.
-            else if(neighboursObj[key].length < 2){
-                $('#'+key).removeClass('alive');
-            }
-            //Eine lebende Zelle mit zwei oder drei lebenden Nachbarn bleibt in der Folgegeneration am Leben.
-            else if(neighboursObj[key].length == 2 || neighboursObj[key].length == 3){
-                // stay alive (au  alive prüfen)
-                if($('#'+key).hasClass('alive')){
-                    $('#'+key).addClass('alive');
-                }
-            }
-            // Lebende Zellen mit mehr als drei lebenden Nachbarn sterben in der Folgegeneration an Überbevölkerung.
-            else if(neighboursObj[key].length > 3){
-                $('#'+key).removeClass('alive');
-            }
-        }
-        */
-
-    })
+    });
 
     var t = null;
     function GameOfLife(){
@@ -135,28 +107,29 @@ $(document).ready(function(){
             // Eine tote Zelle mit genau drei lebenden Nachbarn wird in der Folgegeneration neu geboren.
             if(neighboursObj[key].length == 3){
                 $('#'+key).addClass('alive');
+                $('#'+key).removeClass('die');
             }
             // Lebende Zellen mit weniger als zwei lebenden Nachbarn sterben in der Folgegeneration an Einsamkeit.
             else if(neighboursObj[key].length < 2){
                 $('#'+key).removeClass('alive');
+                $('#'+key).addClass('die');
             }
             //Eine lebende Zelle mit zwei oder drei lebenden Nachbarn bleibt in der Folgegeneration am Leben.
             else if(neighboursObj[key].length == 2 || neighboursObj[key].length == 3){
                 // stay alive (au  alive prüfen)
                 if($('#'+key).hasClass('alive')){
                     $('#'+key).addClass('alive');
+                    $('#'+key).removeClass('die');
                 }
             }
             // Lebende Zellen mit mehr als drei lebenden Nachbarn sterben in der Folgegeneration an Überbevölkerung.
             else if(neighboursObj[key].length > 3){
                 $('#'+key).removeClass('alive');
+                $('#'+key).addClass('die');
             }
         }
 
-        t = window.setTimeout(GameOfLife, 300)
+        t = window.setTimeout(GameOfLife, 200)
     }
-
-
-
 
 });
